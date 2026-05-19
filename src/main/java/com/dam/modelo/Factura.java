@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Factura {
     //...atributos...
-    private int id;
+    private int id; //PK
     private LocalDate fecha;
     private String dniCliente;
     private String dniEmpleado;
@@ -40,19 +40,19 @@ public class Factura {
         this.fecha = fecha;
     }
 
-    public int getDniCliente() {
+    public String getDniCliente() {
         return dniCliente;
     }
 
-    public void setDniCliente(int dniCliente) {
+    public void setDniCliente(String dniCliente) {
         this.dniCliente = dniCliente;
     }
 
-    public int getDniEmpleado() {
+    public String getDniEmpleado() {
         return dniEmpleado;
     }
 
-    public void setDniEmpleado(int dniEmpleado) {
+    public void setDniEmpleado(String dniEmpleado) {
         this.dniEmpleado = dniEmpleado;
     }
 

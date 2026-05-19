@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Producto {
     //...atributos...
-    private int id;
+    private int id; //PK
     private String nombre;
     private double precio;
     private double stock;

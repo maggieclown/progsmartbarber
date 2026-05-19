@@ -1,6 +1,5 @@
 package com.dam.modelo;
 
-import java.time.LocalDate;
 
 public class Servicio {
     //...atributos...
@@ -8,6 +7,11 @@ public class Servicio {
     private String nombre;
     private String descripcion;
     private double precio;
+    private TIPOS tipos;
+
+    public enum TIPOS {
+        Corte, Barba, Tinte, Mechas
+    }
 
     //...Constructor...
     public Servicio() {
@@ -50,4 +54,17 @@ public class Servicio {
         this.precio = precio;
     }
 
+    public TIPOS getTipos() {
+        return tipos;
+    }
+    public String getTiposString() {
+        if (tipos == null) {
+            return "";
+        } else {
+            return tipos.toString();
+        }
+    }
+    public void setTipos(TIPOS tipos) {
+        this.tipos = tipos;
+    }
 }

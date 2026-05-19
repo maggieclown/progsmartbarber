@@ -3,7 +3,7 @@ package com.dam.modelo;
 public class Cliente {
 
     //...atributos...
-    private String dni;
+    private String dni; //PK
     private String nombre;
     private String apellidos;
     private String telefono;
@@ -20,11 +20,12 @@ public class Cliente {
 
 
     //...Setters & Getters...
-    public int getDni() {
+
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int id) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 

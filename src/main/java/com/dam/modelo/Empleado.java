@@ -10,18 +10,19 @@ public class Empleado {
 
     //...Constructor...
     public Empleado() {
-        this.dni = "";
+        this.dni = ""; //PK
         this.nombre = "";
         this.apellidos = "";
         this.telefono = "";
     }
 
     //...Setters & Getters...
-    public int getDni() {
+
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int id) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
