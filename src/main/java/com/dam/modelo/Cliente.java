@@ -1,5 +1,11 @@
 package com.dam.modelo;
 
+import com.dam.vista.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 public class Cliente {
 
     //...atributos...
@@ -20,7 +26,6 @@ public class Cliente {
 
 
     //...Setters & Getters...
-
     public String getDni() {
         return dni;
     }
@@ -61,4 +66,72 @@ public class Cliente {
         this.email = email;
     }
 
+
+    public boolean existeCliente(Cliente cliente) throws Exception {
+        String sql = "SELECT * FROM Clientes WHERE dni=?";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            pst.setString(1, cliente.getDni());
+            ResultSet rs = pst.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new Exception("Error al verificar el cliente", e);
+        }
+    }
+
+    public void altaCliente(Cliente cliente) throws Exception {
+
+        Auxiliar.validarDni(cliente.getDni());
+        Auxiliar.validarTextoObligatorio(cliente.getNombre(), "Nombre");
+        Auxiliar.validarTextoObligatorio(cliente.getApellidos(), "Apellidos");
+        Auxiliar.validarTelefono(cliente.getTelefono());
+        Auxiliar.validarTextoObligatorio(cliente.getEmail(), "Email");
+        Auxiliar.validarEmail(cliente.getEmail());
+
+        if (existeCliente(cliente)) {
+            throw new Exception("El cliente ya existe");
+        }
+        String sql = "INSERT INTO Clientes VALUES (?,?,?,?,?)";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            pst.setString(1, cliente.getDni());
+            pst.setString(2, cliente.getNombre());
+            pst.setString(3, cliente.getApellidos());
+            pst.setString(4, cliente.getTelefono());
+            pst.setString(5, cliente.getEmail());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception("Error al insertar el cliente", e);
+        }
+    }
+
+    public void bajaCliente(Cliente cliente) throws Exception {
+        if (!existeCliente(cliente)) {
+            throw new Exception("El cliente no existe");
+        }
+        String sql = "DELETE FROM Clientes WHERE dni=?";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            pst.setString(1, cliente.getDni());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception("Error al borrar el cliente", e);
+        }
+    }
+
+    public static void listadoClientes(List<Cliente> clientes) throws Exception {
+        String sql = "SELECT * FROM Clientes ORDER BY dni";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setDni(rs.getString("dni"));
+                cliente.setNombre(rs.getString("nombre"));
+                cliente.setApellidos(rs.getString("apellidos"));
+                cliente.setTelefono(rs.getString("telefono"));
+                cliente.setEmail(rs.getString("email"));
+                clientes.add(cliente);
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al obtener los clientes", e);
+        }
+    }
 }
+

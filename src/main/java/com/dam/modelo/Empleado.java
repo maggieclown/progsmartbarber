@@ -1,23 +1,28 @@
 package com.dam.modelo;
 
+import com.dam.vista.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
 public class Empleado {
 
     //...atributos...
-    private String dni;
+    private String dni; //PK
     private String nombre;
     private String apellidos;
     private String telefono;
 
     //...Constructor...
     public Empleado() {
-        this.dni = ""; //PK
+        this.dni = "";
         this.nombre = "";
         this.apellidos = "";
         this.telefono = "";
     }
 
     //...Setters & Getters...
-
     public String getDni() {
         return dni;
     }
@@ -92,7 +97,7 @@ public class Empleado {
         }
     }
 
-     public void actualizaEmpleado(Empleado empleado) throws Exception {
+    /* public void actualizaEmpleado(Empleado empleado) throws Exception {
          if (!existeEmpleado(empleado)) {
              throw new Exception("El empleado no existe");
          }
@@ -105,7 +110,7 @@ public class Empleado {
              throw new Exception("Error al actualizar el empleado", e);
          }
      }
-
+     */
     public static void listadoEmpleados(List<Empleado> empleados) throws Exception {
         String sql = "SELECT * FROM Empleados ORDER BY dni";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
@@ -125,6 +130,4 @@ public class Empleado {
 
 
     }
-}
-
 }
