@@ -49,4 +49,82 @@ public class Empleado {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    //...Métodos...
+
+    public boolean existeEmpleado(Empleado empleado) throws Exception {
+        String sql = "SELECT * FROM Empleados WHERE dni=?";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            pst.setString(1, empleado.getDni());
+            ResultSet rs = pst.executeQuery();
+            return (rs.next());
+        } catch (SQLException e) {
+            throw new Exception("Error al obtener el empleado", e);
+        }
+    }
+
+    public void altaEmpleado(Empleado empleado) throws Exception {
+        if (existeEmpleado(empleado)) {
+            throw new Exception("El empleado ya existe");
+        }
+        String sql = "INSERT INTO Empleados VALUES (?,?,?,?)";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            pst.setString(1, empleado.getDni());
+            pst.setString(2, empleado.getNombre());
+            pst.setString(3, empleado.getApellidos());
+            pst.setString(4, empleado.getTelefono());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception("Error al insertar el empleado", e);
+        }
+    }
+
+    public void bajaEmpleado(Empleado empleado) throws Exception {
+        if (!existeEmpleado(empleado)) {
+            throw new Exception("El empleado no existe");
+        }
+        String sql = "DELETE FROM Empleados WHERE dni=?";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            pst.setString(1, empleado.getDni());
+            pst.executeUpdate();
+        }  catch (SQLException e) {
+            throw new Exception("Error al borrar el empleado", e);
+        }
+    }
+
+     public void actualizaEmpleado(Empleado empleado) throws Exception {
+         if (!existeEmpleado(empleado)) {
+             throw new Exception("El empleado no existe");
+         }
+         String sql = "UPDATE Empleados SET nombre =? WHERE dni=?";
+         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+             pst.setString(1, empleado.getNombre());
+             pst.setString(2, empleado.getDni());
+             pst.executeUpdate();
+         }  catch (SQLException e) {
+             throw new Exception("Error al actualizar el empleado", e);
+         }
+     }
+
+    public static void listadoEmpleados(List<Empleado> empleados) throws Exception {
+        String sql = "SELECT * FROM Empleados ORDER BY dni";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
+            ResultSet rs = pst.executeQuery();
+            Empleado empleado;
+            while (rs.next()) {
+                empleado = new Empleado();
+                empleado.setDni(rs.getString("dni"));
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setApellidos(rs.getString("apellidos"));
+                empleado.setTelefono(rs.getString("telefono"));
+                empleados.add(empleado);
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al obtener el empleado", e);
+        }
+
+
+    }
+}
+
 }

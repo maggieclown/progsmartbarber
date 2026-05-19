@@ -1,4 +1,4 @@
-package com.dam.modelo;
+ackage com.dam.modelo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
