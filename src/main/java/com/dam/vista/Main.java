@@ -2,7 +2,7 @@ package com.dam.vista;
 
 import com.dam.modelo.*;
 
-package com.dam.vista;
+
 
 import com.dam.modelo.*;
 import java.time.LocalDate;

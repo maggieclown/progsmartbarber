@@ -2,7 +2,6 @@ package com.dam.modelo;
 
 import java.time.LocalDate;
 
-package com.dam.modelo;
 
 import com.dam.vista.*;
 import java.sql.Date;
