@@ -2,9 +2,6 @@ package com.dam.vista;
 
 import com.dam.modelo.*;
 
-
-
-import com.dam.modelo.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

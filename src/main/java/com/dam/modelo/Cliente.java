@@ -1,6 +1,7 @@
 package com.dam.modelo;
 
 import com.dam.vista.*;
+import com.dam.modelo.ConexionBD;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
