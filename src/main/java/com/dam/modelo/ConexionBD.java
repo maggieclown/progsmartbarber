@@ -90,6 +90,7 @@ public class ConexionBD {
         try (FileInputStream fis = new FileInputStream("dbproperties.txt")) {
             Properties props = new Properties();
             props.load(fis);
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
                     props.getProperty("mysql.url"),
                     props.getProperty("mysql.username"),
