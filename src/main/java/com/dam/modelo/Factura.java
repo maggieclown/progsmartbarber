@@ -1,9 +1,7 @@
 package com.dam.modelo;
 
-import java.time.LocalDate;
-
-
 import com.dam.vista.*;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,9 +10,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Factura {
-    //...atributos...
-    private int id; //PK
+
+    //..atributos..
+    private int id;
     private LocalDate fecha;
+    private double total; // Atributo mapeado para la BD
     private String dniCliente;
     private String dniEmpleado;
     private int idServicio;
@@ -24,15 +24,14 @@ public class Factura {
     public Factura() {
         this.id = 0;
         this.fecha = null;
+        this.total = 0.0;
         this.dniCliente = "";
         this.dniEmpleado = "";
         this.idServicio = 0;
         this.idProducto = 0;
     }
 
-
     //...Setters & Getters...
-
     public int getId() {
         return id;
     }
@@ -47,6 +46,14 @@ public class Factura {
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public String getDniCliente() {
@@ -81,49 +88,53 @@ public class Factura {
         this.idProducto = idProducto;
     }
 
+
+    //...Métodos...
     public boolean existeFactura(Factura factura) throws Exception {
-        String sql = "SELECT * FROM Facturas WHERE id=?";
+        String sql = "SELECT 1 FROM Facturas WHERE id=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
             pst.setInt(1, factura.getId());
-            ResultSet rs = pst.executeQuery();
-            return rs.next();
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
         } catch (SQLException e) {
             throw new Exception("Error al verificar la factura", e);
         }
     }
 
     public void altaFactura(Factura factura) throws Exception {
-
         Auxiliar.validarId(factura.getId(), "Número de Factura");
         Auxiliar.validarFechaFactura(factura.getFecha());
-
-        // Comprobamos los formatos de las claves foráneas (FK) antes de enviarlas a la BD
+        Auxiliar.validarPrecio(factura.getTotal());
         Auxiliar.validarDni(factura.getDniCliente());
         Auxiliar.validarDni(factura.getDniEmpleado());
-        Auxiliar.validarId(factura.getIdServicio(), "ID Servicio de la factura");
-        Auxiliar.validarId(factura.getIdProducto(), "ID Producto de la factura");
+        Auxiliar.validarId(factura.getIdServicio(), "ID Servicio");
+        Auxiliar.validarId(factura.getIdProducto(), "ID Producto");
 
         if (existeFactura(factura)) {
             throw new Exception("El número de factura ya existe");
         }
-        String sql = "INSERT INTO Facturas VALUES (?,?,?,?,?,?)";
+
+        String sql = "INSERT INTO Facturas (id, fecha, total, dni_cliente, dni_empleado, id_servicio, id_producto) VALUES (?,?,?,?,?,?,?)";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
             pst.setInt(1, factura.getId());
             pst.setDate(2, Date.valueOf(factura.getFecha()));
-            pst.setString(3, factura.getDniCliente());
-            pst.setString(4, factura.getDniEmpleado());
-            pst.setInt(5, factura.getIdServicio());
-            pst.setInt(6, factura.getIdProducto());
+            pst.setDouble(3, factura.getTotal());
+            pst.setString(4, factura.getDniCliente());
+            pst.setString(5, factura.getDniEmpleado());
+            pst.setInt(6, factura.getIdServicio());
+            pst.setInt(7, factura.getIdProducto());
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new Exception("Error al insertar la factura", e);
+            throw new Exception("Error al insertar la factura. Verifique que las FKs existan.", e);
         }
     }
 
     public static void listadoFacturas(List<Factura> facturas) throws Exception {
-        String sql = "SELECT * FROM Facturas ORDER BY id";
-        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
-            ResultSet rs = pst.executeQuery();
+
+        String sql = "SELECT id, fecha, total, dni_cliente, dni_empleado, id_servicio, id_producto FROM Facturas ORDER BY id";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 Factura factura = new Factura();
                 factura.setId(rs.getInt("id"));
@@ -133,13 +144,14 @@ public class Factura {
                     factura.setFecha(sqlDate.toLocalDate());
                 }
 
-                factura.setDniCliente(rs.getString("dniCliente"));
-                factura.setDniEmpleado(rs.getString("dniEmpleado"));
-                factura.setIdServicio(rs.getInt("idServicio"));
-                factura.setIdProducto(rs.getInt("idProducto"));
+                factura.setTotal(rs.getDouble("total"));
+                factura.setDniCliente(rs.getString("dni_cliente"));
+                factura.setDniEmpleado(rs.getString("dni_empleado"));
+                factura.setIdServicio(rs.getInt("id_servicio"));
+                factura.setIdProducto(rs.getInt("id_producto"));
                 facturas.add(factura);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new Exception("Error al obtener las facturas", e);
         }
     }

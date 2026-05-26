@@ -1,28 +1,29 @@
 package com.dam.modelo;
 
-
 import com.dam.vista.*;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 public class Producto {
+
     //...atributos...
-    private int id; //PK
+    private int id;
     private String nombre;
     private double precio;
-    private double stock;
+    private int stock; // Tipo int alineado a la BD
+    private String dniEmpleado; // Clave Foránea obligatoria
 
-
-    //...Constructor...
+    //...constructor...
     public Producto() {
         this.id = 0;
         this.nombre = "";
-        this.precio = 0;
+        this.precio = 0.0;
         this.stock = 0;
+        this.dniEmpleado = "";
     }
-
 
     //...Setters & Getters...
     public int getId() {
@@ -49,42 +50,53 @@ public class Producto {
         this.precio = precio;
     }
 
-    public double getStock() {
+    public int getStock() {
         return stock;
     }
 
-    public void setStock(double stock) {
+    public void setStock(int stock) {
         this.stock = stock;
     }
 
+    public String getDniEmpleado() {
+        return dniEmpleado;
+    }
 
+    public void setDniEmpleado(String dniEmpleado) {
+        this.dniEmpleado = dniEmpleado;
+    }
+
+
+    //...Métodos...
     public boolean existeProducto(Producto producto) throws Exception {
-        String sql = "SELECT * FROM Productos WHERE id=?";
+        String sql = "SELECT 1 FROM Productos WHERE id=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
             pst.setInt(1, producto.getId());
-            ResultSet rs = pst.executeQuery();
-            return rs.next();
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
         } catch (SQLException e) {
             throw new Exception("Error al verificar el producto", e);
         }
     }
 
     public void altaProducto(Producto producto) throws Exception {
-
         Auxiliar.validarId(producto.getId(), "ID Producto");
         Auxiliar.validarTextoObligatorio(producto.getNombre(), "Nombre Producto");
         Auxiliar.validarPrecio(producto.getPrecio());
         Auxiliar.validarStock(producto.getStock());
+        Auxiliar.validarDni(producto.getDniEmpleado());
 
         if (existeProducto(producto)) {
             throw new Exception("El producto con esa ID ya existe");
         }
-        String sql = "INSERT INTO Productos VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Productos (id, nombre, precio, stock, dni_empleado) VALUES (?,?,?,?,?)";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
             pst.setInt(1, producto.getId());
             pst.setString(2, producto.getNombre());
             pst.setDouble(3, producto.getPrecio());
-            pst.setDouble(4, producto.getStock());
+            pst.setInt(4, producto.getStock());
+            pst.setString(5, producto.getDniEmpleado());
             pst.executeUpdate();
         } catch (SQLException e) {
             throw new Exception("Error al insertar el producto", e);
@@ -105,18 +117,19 @@ public class Producto {
     }
 
     public static void listadoProductos(List<Producto> productos) throws Exception {
-        String sql = "SELECT * FROM Productos ORDER BY id";
-        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
-            ResultSet rs = pst.executeQuery();
+        String sql = "SELECT id, nombre, precio, stock, dni_empleado FROM Productos ORDER BY id";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 Producto producto = new Producto();
                 producto.setId(rs.getInt("id"));
                 producto.setNombre(rs.getString("nombre"));
                 producto.setPrecio(rs.getDouble("precio"));
-                producto.setStock(rs.getDouble("stock"));
+                producto.setStock(rs.getInt("stock"));
+                producto.setDniEmpleado(rs.getString("dni_empleado"));
                 productos.add(producto);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new Exception("Error al obtener los productos", e);
         }
     }

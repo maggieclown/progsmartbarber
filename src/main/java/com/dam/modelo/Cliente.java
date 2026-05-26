@@ -1,7 +1,7 @@
 package com.dam.modelo;
 
 import com.dam.vista.*;
-import com.dam.modelo.ConexionBD;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.util.List;
 public class Cliente {
 
     //...atributos...
-    private String dni; //PK
+    private String dni;
     private String nombre;
     private String apellidos;
     private String telefono;
@@ -24,7 +24,6 @@ public class Cliente {
         this.telefono = "";
         this.email = "";
     }
-
 
     //...Setters & Getters...
     public String getDni() {
@@ -67,20 +66,20 @@ public class Cliente {
         this.email = email;
     }
 
-
+    //...Métodos...
     public boolean existeCliente(Cliente cliente) throws Exception {
-        String sql = "SELECT * FROM Clientes WHERE dni=?";
+        String sql = "SELECT 1 FROM Clientes WHERE dni=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
             pst.setString(1, cliente.getDni());
-            ResultSet rs = pst.executeQuery();
-            return rs.next();
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
         } catch (SQLException e) {
             throw new Exception("Error al verificar el cliente", e);
         }
     }
 
     public void altaCliente(Cliente cliente) throws Exception {
-
         Auxiliar.validarDni(cliente.getDni());
         Auxiliar.validarTextoObligatorio(cliente.getNombre(), "Nombre");
         Auxiliar.validarTextoObligatorio(cliente.getApellidos(), "Apellidos");
@@ -91,7 +90,7 @@ public class Cliente {
         if (existeCliente(cliente)) {
             throw new Exception("El cliente ya existe");
         }
-        String sql = "INSERT INTO Clientes VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO Clientes (dni, nombre, apellidos, telefono, email) VALUES (?,?,?,?,?)";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
             pst.setString(1, cliente.getDni());
             pst.setString(2, cliente.getNombre());
@@ -105,6 +104,7 @@ public class Cliente {
     }
 
     public void bajaCliente(Cliente cliente) throws Exception {
+        Auxiliar.validarDni(cliente.getDni());
         if (!existeCliente(cliente)) {
             throw new Exception("El cliente no existe");
         }
@@ -118,9 +118,9 @@ public class Cliente {
     }
 
     public static void listadoClientes(List<Cliente> clientes) throws Exception {
-        String sql = "SELECT * FROM Clientes ORDER BY dni";
-        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
-            ResultSet rs = pst.executeQuery();
+        String sql = "SELECT dni, nombre, apellidos, telefono, email FROM Clientes ORDER BY dni";
+        try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
             while (rs.next()) {
                 Cliente cliente = new Cliente();
                 cliente.setDni(rs.getString("dni"));
@@ -130,9 +130,8 @@ public class Cliente {
                 cliente.setEmail(rs.getString("email"));
                 clientes.add(cliente);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new Exception("Error al obtener los clientes", e);
         }
     }
 }
-

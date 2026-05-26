@@ -9,9 +9,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static int mostrarMenu() {
-        Scanner sc = new Scanner(System.in);
-        int op;
+    private static int mostrarMenu(Scanner sc) {
         System.out.println("MENÚ");
         System.out.println("----");
         System.out.println();
@@ -33,7 +31,9 @@ public class Main {
         System.out.println("00.- Salir.");
         System.out.println();
         System.out.print("Opción? ");
-        op = sc.nextInt();
+
+        int op = sc.nextInt();
+        sc.nextLine(); // Limpia el salto de línea del búfer
         System.out.println();
         return op;
     }
@@ -65,19 +65,25 @@ public class Main {
 
         do {
             System.out.println();
-            op = mostrarMenu();
+            op = mostrarMenu(sc);
             try {
                 switch (op) {
                     case 1: //...Alta de cliente...
                     {
                         Cliente cliente = new Cliente();
-                        System.out.print("DNI: "); cliente.setDni(sc.next());
-                        System.out.print("Nombre: "); cliente.setNombre(sc.next());
-                        System.out.print("Apellidos: "); cliente.setApellidos(sc.next());
-                        System.out.print("Teléfono: "); cliente.setTelefono(sc.next());
-                        System.out.print("Email: "); cliente.setEmail(sc.next());
+                        System.out.print("DNI: ");
+                        cliente.setDni(sc.nextLine());
+                        System.out.print("Nombre: ");
+                        cliente.setNombre(sc.nextLine());
+                        System.out.print("Apellidos: ");
+                        cliente.setApellidos(sc.nextLine());
+                        System.out.print("Teléfono: ");
+                        cliente.setTelefono(sc.nextLine());
+                        System.out.print("Email: ");
+                        cliente.setEmail(sc.nextLine());
 
                         cliente.altaCliente(cliente);
+                        clientes.add(cliente);
                         System.out.println("Cliente dado de alta correctamente.");
                         break;
                     }
@@ -85,21 +91,27 @@ public class Main {
                     {
                         Cliente cliente = new Cliente();
                         System.out.print("Introduce el DNI del cliente a borrar: ");
-                        cliente.setDni(sc.next());
+                        cliente.setDni(sc.nextLine());
 
                         cliente.bajaCliente(cliente);
+                        clientes.removeIf(c -> c.getDni().equalsIgnoreCase(cliente.getDni()));
                         System.out.println("Cliente eliminado correctamente.");
                         break;
                     }
                     case 3: //...Alta de empleado...
                     {
                         Empleado empleado = new Empleado();
-                        System.out.print("DNI: "); empleado.setDni(sc.next());
-                        System.out.print("Nombre: "); empleado.setNombre(sc.next());
-                        System.out.print("Apellidos: "); empleado.setApellidos(sc.next());
-                        System.out.print("Teléfono: "); empleado.setTelefono(sc.next());
+                        System.out.print("DNI: ");
+                        empleado.setDni(sc.nextLine());
+                        System.out.print("Nombre: ");
+                        empleado.setNombre(sc.nextLine());
+                        System.out.print("Apellidos: ");
+                        empleado.setApellidos(sc.nextLine());
+                        System.out.print("Teléfono: ");
+                        empleado.setTelefono(sc.nextLine());
 
                         empleado.altaEmpleado(empleado);
+                        empleados.add(empleado);
                         System.out.println("Empleado dado de alta correctamente.");
                         break;
                     }
@@ -107,32 +119,48 @@ public class Main {
                     {
                         Empleado empleado = new Empleado();
                         System.out.print("Introduce el DNI del empleado a borrar: ");
-                        empleado.setDni(sc.next());
+                        empleado.setDni(sc.nextLine());
 
                         empleado.bajaEmpleado(empleado);
+                        empleados.removeIf(e -> e.getDni().equalsIgnoreCase(empleado.getDni()));
                         System.out.println("Empleado eliminado correctamente.");
                         break;
                     }
                     case 5: //...Alta de servicio...
                     {
                         Servicio servicio = new Servicio();
-                        System.out.print("ID Servicio (Numérico): "); servicio.setId(sc.nextInt());
-                        System.out.print("Nombre: "); sc.nextLine();
+                        System.out.print("ID Servicio (Numérico): ");
+                        servicio.setId(sc.nextInt());
+                        sc.nextLine();
+                        System.out.print("Nombre: ");
                         servicio.setNombre(sc.nextLine());
-                        System.out.print("Descripción: "); servicio.setDescripcion(sc.nextLine());
-                        System.out.print("Precio: "); servicio.setPrecio(sc.nextDouble());
+                        System.out.print("Descripción: ");
+                        servicio.setDescripcion(sc.nextLine());
+                        System.out.print("Precio: ");
+                        servicio.setPrecio(sc.nextDouble());
 
                         System.out.println("Selecciona Tipo (1:Corte, 2:Barba, 3:Tinte, 4:Mechas): ");
                         int tipoOp = sc.nextInt();
-                        switch(tipoOp) {
-                            case 1: servicio.setTipos(Servicio.TIPOS.Corte); break;
-                            case 2: servicio.setTipos(Servicio.TIPOS.Barba); break;
-                            case 3: servicio.setTipos(Servicio.TIPOS.Tinte); break;
-                            case 4: servicio.setTipos(Servicio.TIPOS.Mechas); break;
-                            default: System.out.println("Tipo no válido, se asignará vacío.");
+                        sc.nextLine();
+                        switch (tipoOp) {
+                            case 1:
+                                servicio.setTipos(Servicio.TIPOS.Corte);
+                                break;
+                            case 2:
+                                servicio.setTipos(Servicio.TIPOS.Barba);
+                                break;
+                            case 3:
+                                servicio.setTipos(Servicio.TIPOS.Tinte);
+                                break;
+                            case 4:
+                                servicio.setTipos(Servicio.TIPOS.Mechas);
+                                break;
+                            default:
+                                System.out.println("Tipo no válido, se asignará vacío.");
                         }
 
                         servicio.altaServicio(servicio);
+                        servicios.add(servicio);
                         System.out.println("Servicio dado de alta correctamente.");
                         break;
                     }
@@ -141,21 +169,31 @@ public class Main {
                         Servicio servicio = new Servicio();
                         System.out.print("Introduce el ID del servicio a borrar: ");
                         servicio.setId(sc.nextInt());
+                        sc.nextLine();
 
                         servicio.bajaServicio(servicio);
+                        servicios.removeIf(s -> s.getId() == servicio.getId());
                         System.out.println("Servicio eliminado correctamente.");
                         break;
                     }
                     case 7: //...Alta de producto...
                     {
                         Producto producto = new Producto();
-                        System.out.print("ID Producto (Numérico): "); producto.setId(sc.nextInt());
-                        System.out.print("Nombre: "); sc.nextLine();
+                        System.out.print("ID Producto (Numérico): ");
+                        producto.setId(sc.nextInt());
+                        sc.nextLine();
+                        System.out.print("Nombre: ");
                         producto.setNombre(sc.nextLine());
-                        System.out.print("Precio: "); producto.setPrecio(sc.nextDouble());
-                        System.out.print("Stock inicial: "); producto.setStock(sc.nextDouble());
+                        System.out.print("Precio: ");
+                        producto.setPrecio(sc.nextDouble());
+                        System.out.print("Stock inicial: ");
+                        producto.setStock(sc.nextInt());
+                        sc.nextLine();
+                        System.out.print("DNI de Empleado responsable: ");
+                        producto.setDniEmpleado(sc.nextLine());
 
                         producto.altaProducto(producto);
+                        productos.add(producto);
                         System.out.println("Producto dado de alta correctamente.");
                         break;
                     }
@@ -164,25 +202,36 @@ public class Main {
                         Producto producto = new Producto();
                         System.out.print("Introduce el ID del producto a borrar: ");
                         producto.setId(sc.nextInt());
+                        sc.nextLine();
 
                         producto.bajaProducto(producto);
+                        productos.removeIf(p -> p.getId() == producto.getId());
                         System.out.println("Producto eliminado correctamente.");
                         break;
                     }
                     case 9: //...Alta factura...
                     {
                         Factura factura = new Factura();
-                        System.out.print("ID Factura (Numérico): "); factura.setId(sc.nextInt());
+                        System.out.print("ID Factura (Numérico): ");
+                        factura.setId(sc.nextInt());
+                        sc.nextLine();
 
-                        // Asigna la fecha actual del sistema automáticamente
                         factura.setFecha(LocalDate.now());
 
-                        System.out.print("DNI Cliente: "); factura.setDniCliente(sc.next());
-                        System.out.print("DNI Empleado: "); factura.setDniEmpleado(sc.next());
-                        System.out.print("ID Servicio asociado: "); factura.setIdServicio(sc.nextInt());
-                        System.out.print("ID Producto asociado: "); factura.setIdProducto(sc.nextInt());
+                        System.out.print("DNI Cliente: ");
+                        factura.setDniCliente(sc.nextLine());
+                        System.out.print("DNI Empleado: ");
+                        factura.setDniEmpleado(sc.nextLine());
+                        System.out.print("ID Servicio asociado: ");
+                        factura.setIdServicio(sc.nextInt());
+                        System.out.print("ID Producto asociado: ");
+                        factura.setIdProducto(sc.nextInt());
+                        System.out.print("Total Factura (€): ");
+                        factura.setTotal(sc.nextDouble());
+                        sc.nextLine();
 
                         factura.altaFactura(factura);
+                        facturas.add(factura);
                         System.out.println("Factura creada y registrada correctamente.");
                         break;
                     }
@@ -222,7 +271,7 @@ public class Main {
                         Producto.listadoProductos(productos);
                         System.out.println("\n--- LISTADO DE PRODUCTOS ---");
                         for (Producto p : productos) {
-                            System.out.println(p.getId() + " - " + p.getNombre() + " - Precio: " + p.getPrecio() + "€ - Stock: " + p.getStock());
+                            System.out.println(p.getId() + " - " + p.getNombre() + " - Precio: " + p.getPrecio() + "€ - Stock: " + p.getStock() + " - Emp Resp: " + p.getDniEmpleado());
                         }
                         break;
                     }
@@ -230,9 +279,9 @@ public class Main {
                     {
                         facturas.clear();
                         Factura.listadoFacturas(facturas);
-                        System.out.println("\n--- LISTADO DE FACTURAS / COMPRAS ---");
+                        System.out.println("\n--- LISTADO DE FACTURAS ---");
                         for (Factura f : facturas) {
-                            System.out.println("Factura Nº: " + f.getId() + " | Fecha: " + f.getFecha() +
+                            System.out.println("Factura Nº: " + f.getId() + " | Fecha: " + f.getFecha() + " | Total: " + f.getTotal() + "€" +
                                     " | Cliente: " + f.getDniCliente() + " | Empleado: " + f.getDniEmpleado() +
                                     " | Serv ID: " + f.getIdServicio() + " | Prod ID: " + f.getIdProducto());
                         }
@@ -240,6 +289,7 @@ public class Main {
                     }
                     case 15: //...Guardar información en base de datos...
                     {
+                        System.out.println("Información ya sincronizada automáticamente con la Base de Datos.");
                         break;
                     }
                     case 0:
@@ -253,10 +303,11 @@ public class Main {
             }
         } while (op != 0);
 
+        sc.close();
+
         try {
-            if (ConexionBD.getConn() != null && !ConexionBD.getConn().isClosed()) {
-                ConexionBD.getConn().close();
-            }
-        } catch (Exception ignored) {}
+            ConexionBD.cerrarConexion();
+        } catch (Exception ignored) {
+        }
     }
 }

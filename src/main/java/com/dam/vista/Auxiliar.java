@@ -1,271 +1,166 @@
 package com.dam.vista;
 
 import com.dam.modelo.*;
+
 import java.util.List;
 
 public class Auxiliar {
 
-    // PRECARGA DE DATOS
-
     public static void preCarga(List<Cliente> clientes, List<Empleado> empleados, List<Producto> productos, List<Servicio> servicios) {
+        System.out.println("Iniciando precarga de datos...");
 
-        System.out.println("Iniciando precarga de datos en la Base de Datos...");
-
-        // --- PRECARGA DE CLIENTES ---
         try {
-            Cliente cliente = new Cliente();
-            cliente.setDni("97602871W");
-            cliente.setNombre("Eduardo");
-            cliente.setApellidos("Cano");
-            cliente.setTelefono("612345678");
-            cliente.setEmail("edu@gmail.com");
+            Empleado e1 = new Empleado();
+            e1.setDni("25170503Q");
+            e1.setNombre("Jose");
+            e1.setApellidos("Lapida");
+            e1.setTelefono("624994001");
+            e1.altaEmpleado(e1);
+            empleados.add(e1);
 
-            cliente.altaCliente(cliente);
+            Empleado e2 = new Empleado();
+            e2.setDni("30361374V");
+            e2.setNombre("Vick");
+            e2.setApellidos("Barcelo");
+            e2.setTelefono("659118813");
+            e2.altaEmpleado(e2);
+            empleados.add(e2);
         } catch (Exception e) {
-            System.out.println("Error al registrar el cliente 1: " + e.getMessage());
+            System.out.println("Aviso precarga empleados: " + e.getMessage());
         }
 
         try {
-            Cliente cliente2 = new Cliente();
-            cliente2.setDni("85109842K");
-            cliente2.setNombre("Sergio");
-            cliente2.setApellidos("Valera");
-            cliente2.setTelefono("623456789");
-            cliente2.setEmail("sergio@gmail.com");
+            Cliente c1 = new Cliente();
+            c1.setDni("97602871W");
+            c1.setNombre("Eduardo");
+            c1.setApellidos("Cano");
+            c1.setTelefono("612345678");
+            c1.setEmail("edu@gmail.com");
+            c1.altaCliente(c1);
+            clientes.add(c1);
 
-            cliente2.altaCliente(cliente2);
+            Cliente c2 = new Cliente();
+            c2.setDni("85109842K");
+            c2.setNombre("Sergio");
+            c2.setApellidos("Valera");
+            c2.setTelefono("623456789");
+            c2.setEmail("sergio@gmail.com");
+            c2.altaCliente(c2);
+            clientes.add(c2);
         } catch (Exception e) {
-            System.out.println("Error al registrar el cliente 2: " + e.getMessage());
-        }
-
-        // --- PRECARGA DE EMPLEADOS ---
-        try {
-            Empleado empleado1 = new Empleado();
-            empleado1.setDni("25170503Q");
-            empleado1.setNombre("Jose");
-            empleado1.setApellidos("Lapida");
-            empleado1.setTelefono("624994001");
-
-            empleado1.altaEmpleado(empleado1);
-        } catch (Exception e) {
-            System.out.println("Error al registrar el empleado 1: " + e.getMessage());
+            System.out.println("Aviso precarga clientes: " + e.getMessage());
         }
 
         try {
-            Empleado empleado2 = new Empleado();
-            empleado2.setDni("30361374V");
-            empleado2.setNombre("Vick");
-            empleado2.setApellidos("Barcelo");
-            empleado2.setTelefono("659118813");
+            Producto p1 = new Producto();
+            p1.setId(1);
+            p1.setNombre("Crema para barba");
+            p1.setPrecio(2.13);
+            p1.setStock(10);
+            p1.setDniEmpleado("25170503Q");
+            p1.altaProducto(p1);
+            productos.add(p1);
 
-            empleado2.altaEmpleado(empleado2);
+            Producto p2 = new Producto();
+            p2.setId(2);
+            p2.setNombre("Champú");
+            p2.setPrecio(5.10);
+            p2.setStock(10);
+            p2.setDniEmpleado("25170503Q");
+            p2.altaProducto(p2);
+            productos.add(p2);
         } catch (Exception e) {
-            System.out.println("Error al registrar el empleado 2: " + e.getMessage());
+            System.out.println("Aviso precarga productos: " + e.getMessage());
         }
 
         try {
-            Empleado empleado3 = new Empleado();
-            empleado3.setDni("58247711G");
-            empleado3.setNombre("Leo");
-            empleado3.setApellidos("Vera");
-            empleado3.setTelefono("649126813");
+            Servicio s1 = new Servicio();
+            s1.setId(1);
+            s1.setNombre("Corte");
+            s1.setDescripcion("Corte de calidad");
+            s1.setPrecio(10.0);
+            s1.setTipos(Servicio.TIPOS.Corte);
+            s1.altaServicio(s1);
+            servicios.add(s1);
 
-            empleado3.altaEmpleado(empleado3);
+            Servicio s2 = new Servicio();
+            s2.setId(2);
+            s2.setNombre("Afeitado");
+            s2.setDescripcion("Afeitado de gran calidad");
+            s2.setPrecio(12.0);
+            s2.setTipos(Servicio.TIPOS.Barba);
+            s2.altaServicio(s2);
+            servicios.add(s2);
         } catch (Exception e) {
-            System.out.println("Error al registrar el empleado 3: " + e.getMessage());
-        }
-
-        // --- PRECARGA DE PRODUCTOS ---
-        try {
-            Producto producto1 = new Producto();
-            producto1.setId(1);
-            producto1.setNombre("Crema para barba");
-            producto1.setPrecio(2.13);
-            producto1.setStock(10);
-
-            producto1.altaProducto(producto1);
-        } catch (Exception e) {
-            System.out.println("Error al registrar el producto 1: " + e.getMessage());
-        }
-
-        try {
-            Producto producto2 = new Producto();
-            producto2.setId(2);
-            producto2.setNombre("Champú");
-            producto2.setPrecio(5.10);
-            producto2.setStock(10);
-
-            producto2.altaProducto(producto2);
-        } catch (Exception e) {
-            System.out.println("Error al registrar el producto 2: " + e.getMessage());
-        }
-
-        // --- PRECARGA DE SERVICIOS ---
-        try {
-            Servicio servicio1 = new Servicio();
-            servicio1.setId(1);
-            servicio1.setNombre("Corte");
-            servicio1.setDescripcion("Corte de calidad");
-            servicio1.setPrecio(10.0);
-
-            servicio1.altaServicio(servicio1);
-        } catch (Exception e) {
-            System.out.println("Error al registrar el servicio 1: " + e.getMessage());
-        }
-
-        try {
-            Servicio servicio2 = new Servicio();
-            servicio2.setId(2);
-            servicio2.setNombre("Afeitado");
-            servicio2.setDescripcion("Afeitado de gran calidad");
-            servicio2.setPrecio(12.0);
-
-            servicio2.altaServicio(servicio2);
-        } catch (Exception e) {
-            System.out.println("Error al registrar el servicio 2: " + e.getMessage());
-        }
-
-        try {
-            Servicio servicio3 = new Servicio();
-            servicio3.setId(3);
-            servicio3.setNombre("Afeitado + corte");
-            servicio3.setDescripcion("Opción para ahorrar un poco mas pero con las misma calidad");
-            servicio3.setPrecio(16.0);
-
-            servicio3.altaServicio(servicio3);
-        } catch (Exception e) {
-            System.out.println("Error al registrar el servicio 3: " + e.getMessage());
+            System.out.println("Aviso precarga servicios: " + e.getMessage());
         }
 
         System.out.println("Precarga finalizada.");
     }
 
-    // MÉTODOS DE VALIDACIÓN (ABAJO)
+    //VALIDACIONES
 
-    /**
-     * Valida el DNI.
-     */
     public static void validarDni(String dni) throws Exception {
         if (dni == null || dni.trim().isEmpty()) {
-            throw new Exception("El DNI es un campo obligatorio y no puede estar vacío.");
+            throw new Exception("El DNI es obligatorio.");
         }
-
-        String texto = dni.trim();
-
-        // 1. Comprobar longitud exacta
-        if (texto.length() != 9) {
-            throw new Exception("El formato del DNI '" + dni + "' no es válido (Debe tener 8 números y 1 letra).");
-        }
-
-        // 2. Comprobar que los primeros 8 caracteres sean dígitos
-        for (int i = 0; i < 8; i++) {
-            if (!Character.isDigit(texto.charAt(i))) {
-                throw new Exception("El formato del DNI no es válido (Los 8 primeros caracteres deben ser números).");
-            }
-        }
-
-        // 3. Comprobar que el último carácter sea una letra
-        char ultimaLetra = texto.charAt(8);
-        if (!Character.isLetter(ultimaLetra)) {
-            throw new Exception("El formato del DNI no es válido (El último carácter debe ser una letra).");
+        if (!dni.trim().matches("^[0-9]{8}[A-Za-z]$")) {
+            throw new Exception("El formato del DNI '" + dni + "' no es válido (8 números y 1 letra).");
         }
     }
 
-    /**
-     * Valida que el teléfono tenga exactamente 9 dígitos numéricos.
-     */
     public static void validarTelefono(String telefono) throws Exception {
         if (telefono != null && !telefono.trim().isEmpty()) {
-            String texto = telefono.trim();
-
-            // 1. Comprobar longitud exacta
-            if (texto.length() != 9) {
-                throw new Exception("El teléfono '" + telefono + "' debe tener exactamente 9 dígitos numéricos.");
-            }
-
-            // 2. Comprobar que todos los caracteres sean números
-            for (int i = 0; i < texto.length(); i++) {
-                if (!Character.isDigit(texto.charAt(i))) {
-                    throw new Exception("El teléfono '" + telefono + "' solo puede contener caracteres numéricos.");
-                }
+            if (!telefono.trim().matches("^[0-9]{9}$")) {
+                throw new Exception("El teléfono debe tener exactamente 9 números.");
             }
         }
     }
 
-    /**
-     * Valida el formato del correo (debe contener '@' y un '.' después).
-     */
     public static void validarEmail(String email) throws Exception {
         if (email != null && !email.trim().isEmpty()) {
-            String texto = email.trim();
-
-            // Buscar la posición de la arroba y del punto
-            int posicionArroba = texto.indexOf('@');
-            int posicionUltimoPunto = texto.lastIndexOf('.');
-
-            // Un email básico válido debe tener arroba, no estar al principio,
-            // tener un punto después de la arroba y que el punto no sea el último carácter.
-            if (posicionArroba <= 0 || posicionUltimoPunto <= posicionArroba + 1 || posicionUltimoPunto == texto.length() - 1) {
-                throw new Exception("El formato del correo electrónico '" + email + "' no es válido.");
+            if (!email.trim().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                throw new Exception("El formato del correo electrónico no es válido.");
             }
         }
     }
 
-    /**
-     * Valida si un texto obligatorio está vacío o es nulo.
-     */
     public static void validarTextoObligatorio(String texto, String nombreCampo) throws Exception {
         if (texto == null || texto.trim().isEmpty()) {
-            throw new Exception("El campo '" + nombreCampo + "' es obligatorio y no puede estar vacío.");
+            throw new Exception("El campo '" + nombreCampo + "' no puede estar vacío.");
         }
     }
 
-    /**
-     * Valida que una ID numérica sea mayor que cero.
-     */
     public static void validarId(int id, String nombreCampo) throws Exception {
         if (id <= 0) {
-            throw new Exception("El campo '" + nombreCampo + "' debe ser un número entero mayor que 0.");
+            throw new Exception("El campo '" + nombreCampo + "' debe ser un entero mayor que 0.");
         }
     }
 
-    /**
-     * Valida que un precio no sea un valor negativo.
-     */
     public static void validarPrecio(double precio) throws Exception {
         if (precio < 0) {
-            throw new Exception("El precio del servicio/producto no puede ser un valor negativo.");
+            throw new Exception("El precio no puede ser negativo.");
         }
     }
 
-    /**
-     * Valida que el stock disponible no sea negativo.
-     */
-    public static void validarStock(double stock) throws Exception {
+    public static void validarStock(int stock) throws Exception {
         if (stock < 0) {
-            throw new Exception("El stock disponible no puede ser un valor negativo.");
+            throw new Exception("El stock no puede ser un valor negativo.");
         }
     }
 
-    /**
-     * Valida el tipo de servicio. Si viene vacío o nulo (por descarte del default),
-     * no frena la ejecución, permitiendo guardar el servicio con estado en blanco.
-     */
     public static void validarTipoServicio(Servicio.TIPOS tipo) throws Exception {
         if (tipo == null) {
-            System.out.println("Aviso: Tipo de servicio no especificado o inválido. Se guardará como vacío.");
+            System.out.println("Aviso: Tipo de servicio no especificado.");
         }
     }
 
-    /**
-     * Valida que la fecha de la factura exista y no sea del futuro.
-     */
     public static void validarFechaFactura(java.time.LocalDate fecha) throws Exception {
         if (fecha == null) {
-            throw new Exception("La fecha de la factura es un campo obligatorio.");
+            throw new Exception("La fecha de la factura es obligatoria.");
         }
         if (fecha.isAfter(java.time.LocalDate.now())) {
-            throw new Exception("La fecha introducida no puede ser posterior al día de hoy.");
+            throw new Exception("La fecha no puede ser posterior al día de hoy.");
         }
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmpleadoTest {
@@ -44,12 +45,11 @@ public class EmpleadoTest {
                 pst.setString(1, e.getDni());
                 pst.executeUpdate();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
-    // =========================================================================
-    // TESTS PARA: existeEmpleado()
-    // =========================================================================
+    //test  existeEmpleado
 
     @Test
     public void testExisteEmpleado_NoExiste() throws Exception {
@@ -67,9 +67,8 @@ public class EmpleadoTest {
         assertTrue(resultado);
     }
 
-    // =========================================================================
-    // TESTS PARA: altaEmpleado()
-    // =========================================================================
+
+    // test altaEmpleado
 
     @Test
     public void testAltaEmpleado_Correcto() throws Exception {
@@ -91,9 +90,8 @@ public class EmpleadoTest {
         assertTrue(exception.getMessage().contains("Ya existe un empleado"));
     }
 
-    // =========================================================================
-    // TESTS PARA: bajaEmpleado()
-    // =========================================================================
+
+    // test bajaEmpleado
 
     @Test
     public void testBajaEmpleado_Correcto() throws Exception {
