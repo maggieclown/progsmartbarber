@@ -1,7 +1,3 @@
-# MySQL Properties
-
-mysql.driver=com.mysql.jdbc.Driver
-mysql.url=jdbc:mysql://localhost:3306/smart_barber?serverTimezone=UTC
-# ? serverTimezone=Europe/Madrid & useSSL=false & useServerPrepStmts=true
+mysql.url=jdbc:mysql://localhost:3306/smart_barber
 mysql.username=barber_user
 mysql.password=1234
