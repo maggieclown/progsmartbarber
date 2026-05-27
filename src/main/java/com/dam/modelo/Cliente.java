@@ -7,6 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Clase Cliente (Métodos de existe, alta y baja)
+ *
+ * @author María Magdalena Cano
+ *  @author Sergio Torres Llamas
+ *  @author Juan de Dios Valero Rodríguez
+ *  @since 27/05/2026
+ *  @version 12.0
+ */
+
+
 public class Cliente {
 
     //...atributos...
@@ -67,6 +78,15 @@ public class Cliente {
     }
 
     //...Métodos...
+
+    /**
+     * Método existeCliente
+     *
+     * @param cliente Instancia del cliente que contiene el DNI a verificar.
+     * @return {@code true} si el DNI ya está registrado en la base de datos; {@code false} en caso contrario.
+     * @throws Exception Si ocurre un error de acceso a datos durante la consulta SQL.
+     */
+
     public boolean existeCliente(Cliente cliente) throws Exception {
         String sql = "SELECT 1 FROM Clientes WHERE dni=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
@@ -78,6 +98,13 @@ public class Cliente {
             throw new Exception("Error al verificar el cliente", e);
         }
     }
+
+    /**
+     * Método altaCliente
+     *
+     * @param cliente Instancia con los datos del cliente que se desea dar de alta.
+     * @throws Exception Si alguna validación de formato falla, si el cliente ya existe, o si ocurre un error en la inserción SQL.
+     */
 
     public void altaCliente(Cliente cliente) throws Exception {
         Auxiliar.validarDni(cliente.getDni());
@@ -103,6 +130,14 @@ public class Cliente {
         }
     }
 
+
+    /**
+     * Método bajaCliente
+     *
+     * @param cliente Instancia del cliente que contiene el DNI del registro a eliminar.
+     * @throws Exception Si el formato del DNI es inválido, si el cliente no existe en el sistema, o si ocurre un error en el borrado SQL.
+     */
+
     public void bajaCliente(Cliente cliente) throws Exception {
         Auxiliar.validarDni(cliente.getDni());
         if (!existeCliente(cliente)) {
@@ -116,6 +151,15 @@ public class Cliente {
             throw new Exception("Error al borrar el cliente", e);
         }
     }
+
+
+    /**
+     * Método listadoClientes
+     *
+     * @param clientes Colección en memoria (List) donde se añadirán los clientes recuperados.
+     * @throws Exception Si ocurre un error de lectura en la base de datos durante la ejecución de la consulta.
+     */
+
 
     public static void listadoClientes(List<Cliente> clientes) throws Exception {
         String sql = "SELECT dni, nombre, apellidos, telefono, email FROM Clientes ORDER BY dni";

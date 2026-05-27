@@ -9,6 +9,16 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Clase Factura (Métodos de existe, alta y listado)
+ *
+ * @author María Magdalena Cano
+ * @author Sergio Torres Llamas
+ * @author Juan de Dios Valero Rodríguez
+ * @version 12.0
+ * @since 27/05/2026
+ */
+
 public class Factura {
 
     //..atributos..
@@ -90,6 +100,15 @@ public class Factura {
 
 
     //...Métodos...
+
+    /**
+     * Método existeFactura
+     *
+     * @param factura Instancia que contiene el identificador primario a consultar.
+     * @return {@code true} si la factura existe en el sistema; {@code false} de lo contrario.
+     * @throws Exception Si se detectan anomalías o problemas de red en la comunicación con la base de datos.
+     */
+
     public boolean existeFactura(Factura factura) throws Exception {
         String sql = "SELECT 1 FROM Facturas WHERE id=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
@@ -101,6 +120,14 @@ public class Factura {
             throw new Exception("Error al verificar la factura", e);
         }
     }
+
+
+    /**
+     * Método altaFactura
+     *
+     * @param factura Instancia que contiene todos los datos comerciales listos para persistir.
+     * @throws Exception Si algún formato de dato resulta inválido, si el ID de factura ya existe o si falla la integridad de claves ajenas (FK) en la base de datos durante la inserción.
+     */
 
     public void altaFactura(Factura factura) throws Exception {
         Auxiliar.validarId(factura.getId(), "Número de Factura");
@@ -129,6 +156,14 @@ public class Factura {
             throw new Exception("Error al insertar la factura. Verifique que las FKs existan.", e);
         }
     }
+
+
+    /**
+     * Método listadoFacturas
+     *
+     * @param facturas Colección de destino (List) donde se agregarán las facturas recuperadas.
+     * @throws Exception Si ocurre un fallo crítico al parsear los tipos de datos de SQL (como la fecha) o al consultar el servidor relacional.
+     */
 
     public static void listadoFacturas(List<Factura> facturas) throws Exception {
 

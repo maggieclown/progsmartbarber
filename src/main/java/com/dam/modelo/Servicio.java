@@ -8,6 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Clase Servicio (Métodos de existe, alta, baja y listado)
+ *
+ * @author María Magdalena Cano
+ * @author Sergio Torres Llamas
+ * @author Juan de Dios Valero Rodríguez
+ * @version 12.0
+ * @since 27/05/2026
+ */
+
 public class Servicio {
 
     //...atributos...
@@ -76,6 +86,15 @@ public class Servicio {
     }
 
     //...Métodos...
+
+    /**
+     * Método existeServicio
+     *
+     * @param servicio Instancia que contiene el identificador único a evaluar.
+     * @return {@code true} si el ID ya consta en la base de datos; {@code false} en caso contrario.
+     * @throws Exception Si ocurre un fallo en la sintaxis de la consulta o en la conexión con el motor SQL.
+     */
+
     public boolean existeServicio(Servicio servicio) throws Exception {
         String sql = "SELECT 1 FROM Servicios WHERE id=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
@@ -87,6 +106,13 @@ public class Servicio {
             throw new Exception("Error al verificar el servicio", e);
         }
     }
+
+    /**
+     * Método altaServicio
+     *
+     * @param servicio Instancia con los datos consolidados del servicio que se desea insertar.
+     * @throws Exception Si alguna validación de entrada falla, si el servicio ya existe en el sistema o si se produce un error crítico durante la inserción en el servidor relacional.
+     */
 
     public void altaServicio(Servicio servicio) throws Exception {
         Auxiliar.validarId(servicio.getId(), "ID Servicio");
@@ -111,6 +137,14 @@ public class Servicio {
         }
     }
 
+
+    /**
+     * Método bajaServicio
+     *
+     * @param servicio Instancia que almacena el ID del registro que se pretende dar de baja.
+     * @throws Exception Si el servicio solicitado no consta en el sistema o si surge un problema de integridad relacional o de comunicación SQL durante el borrado.
+     */
+
     public void bajaServicio(Servicio servicio) throws Exception {
         if (!existeServicio(servicio)) {
             throw new Exception("El servicio no existe");
@@ -123,6 +157,14 @@ public class Servicio {
             throw new Exception("Error al borrar el servicio", e);
         }
     }
+
+
+    /**
+     * Método listadoServicios
+     *
+     * @param servicios Colección destino (List) donde se agregarán las instancias de Servicio obtenidas.
+     * @throws Exception Si ocurre un fallo en el mapeo relacional o en las operaciones de lectura SQL.
+     */
 
     public static void listadoServicios(List<Servicio> servicios) throws Exception {
         String sql = "SELECT id, nombre, descripcion, precio, tipo FROM Servicios ORDER BY id";

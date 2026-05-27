@@ -7,7 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Proyecto de gestión de una barbería
+ * Smart-Barber
+ * @author María Magdalena Cano
+ * @author Sergio Torres Llamas
+ * @author Juan de Dios Valero Rodríguez
+ * @since 27/05/2026
+ * @version 12.0
+ */
+
 public class Main {
+
+    /**
+     * Muestra un menú de opciones
+     * @return Opción seleccionada
+     */
 
     private static int mostrarMenu(Scanner sc) {
         System.out.println("MENÚ");
@@ -37,6 +52,12 @@ public class Main {
         System.out.println();
         return op;
     }
+
+    /**
+     * Método principal del proyecto
+     * @param args
+     * @throws Exception
+     */
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);

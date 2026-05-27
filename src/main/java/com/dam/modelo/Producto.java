@@ -7,6 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Clase Producto (Métodos de existe, alta, baja y listado)
+ *
+ * @author María Magdalena Cano
+ * @author Sergio Torres Llamas
+ * @author Juan de Dios Valero Rodríguez
+ * @version 12.0
+ * @since 27/05/2026
+ */
+
+
 public class Producto {
 
     //...atributos...
@@ -68,6 +79,15 @@ public class Producto {
 
 
     //...Métodos...
+
+    /**
+     * Método existeProducto
+     *
+     * @param producto Instancia que contiene el ID de producto a verificar.
+     * @return {@code true} si el producto ya está registrado; {@code false} en caso contrario.
+     * @throws Exception Si ocurre un error de comunicación o de sintaxis SQL al realizar la consulta.
+     */
+
     public boolean existeProducto(Producto producto) throws Exception {
         String sql = "SELECT 1 FROM Productos WHERE id=?";
         try (PreparedStatement pst = ConexionBD.getConn().prepareStatement(sql)) {
@@ -79,6 +99,14 @@ public class Producto {
             throw new Exception("Error al verificar el producto", e);
         }
     }
+
+
+    /**
+     * Método altaProducto
+     *
+     * @param producto Instancia con los datos completos del producto a dar de alta.
+     * @throws Exception Si falla alguna validación de formato, si el ID del producto ya existe, o si se produce un error de inserción SQL (por ejemplo, si la FK del empleado no existe).
+     */
 
     public void altaProducto(Producto producto) throws Exception {
         Auxiliar.validarId(producto.getId(), "ID Producto");
@@ -103,6 +131,14 @@ public class Producto {
         }
     }
 
+    /**
+     * Método bajaProducto
+     *
+     * @param producto Instancia del producto que almacena el ID del registro a eliminar.
+     * @throws Exception Si el producto no consta en el sistema o si surge una excepción de restricción o borrado SQL en la base de datos.
+     */
+
+
     public void bajaProducto(Producto producto) throws Exception {
         if (!existeProducto(producto)) {
             throw new Exception("El producto no existe");
@@ -115,6 +151,14 @@ public class Producto {
             throw new Exception("Error al borrar el producto", e);
         }
     }
+
+
+    /**
+     * Método listadoProductos
+     *
+     * @param productos Colección destino (List) donde se inyectarán los objetos Producto mapeados.
+     * @throws Exception Si ocurre un fallo en el volcado de datos o durante la lectura de la consulta relacional SQL.
+     */
 
     public static void listadoProductos(List<Producto> productos) throws Exception {
         String sql = "SELECT id, nombre, precio, stock, dni_empleado FROM Productos ORDER BY id";
